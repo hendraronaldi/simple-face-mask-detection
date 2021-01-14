@@ -7,5 +7,8 @@ Notebook: https://github.com/hendraronaldi/DPHI_data_science_challenges/blob/mai
 Dataset: https://drive.google.com/file/d/1_W2gFFZmy6ZyC8TPlxB49eDFswdBsQqo/view?usp=sharing
 
 * Python 3
+* streamlit
+* numpy
+* joblib
 * OpenCV
 * Tensorflow -> Using Vgg16 transfer learning to extract features

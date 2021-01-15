@@ -3,7 +3,7 @@ grpcio==1.32.0
 dill==0.3.3
 joblib==1.0.0
 numpy==1.19.5
-opencv-python==4.5.1.48
+opencv-python-headless==4.5.1.48
 scikit-learn==0.22.2.post1
 streamlit==0.74.1
 tensorboard==2.4.0

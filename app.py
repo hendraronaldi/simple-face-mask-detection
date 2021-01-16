@@ -52,11 +52,11 @@ while run:
 	status.write('')
 	camera = cv2.VideoCapture(0)
 	if not camera.isOpened():
-		camera.open()
+		camera.open(0)
 
 	subH.subheader('Face Mask Prediction')
 	ret, frame = camera.read()
-	if ret:
+	if ret and camera.isOpened():
 		isCameraOn = True
 		frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 		frame = cv2.flip(frame, 1)

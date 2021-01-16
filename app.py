@@ -15,11 +15,14 @@ Source Notebook: [link](https://github.com/hendraronaldi/DPHI_data_science_chall
 st.write("""
 Dataset: [link](https://drive.google.com/file/d/1_W2gFFZmy6ZyC8TPlxB49eDFswdBsQqo/view?usp=sharing)
 """)
+idx = st.number_input('camera index') 
 run = st.checkbox('Run Webcam')
 FRAME_WINDOW = st.image([])
-# camera = cv2.VideoCapture(0)
+if idx != None:
+	camera = cv2.VideoCapture(int(idx))
+else:
+	camera = cv2.VideoCapture(0)
 isCameraOn = False
-camera = None
 # st.subheader('Face Mask Prediction')
 subH = st.empty()
 result = st.empty()
@@ -42,7 +45,7 @@ def load_features():
 
 @st.cache
 def load_scaler():
-	return joblib.load('scaler.pkl') 
+	return joblib.load('scaler.pkl')
 
 model = load_model()
 dm = load_features()
@@ -50,10 +53,6 @@ scaler = load_scaler()
 
 while run:
 	status.write('')
-	camera = cv2.VideoCapture(0)
-	if not camera.isOpened():
-		camera.open(0)
-
 	subH.subheader('Face Mask Prediction')
 	ret, frame = camera.read()
 	if ret and camera.isOpened():

@@ -17,8 +17,11 @@ Dataset: [link](https://drive.google.com/file/d/1_W2gFFZmy6ZyC8TPlxB49eDFswdBsQq
 """)
 run = st.checkbox('Run Webcam')
 FRAME_WINDOW = st.image([])
-camera = cv2.VideoCapture(0)
-st.subheader('Face Mask Prediction')
+# camera = cv2.VideoCapture(0)
+isCameraOn = False
+camera = None
+# st.subheader('Face Mask Prediction')
+subH = st.empty()
 result = st.empty()
 status = st.empty()
 
@@ -47,19 +50,29 @@ scaler = load_scaler()
 
 while run:
 	status.write('')
-	_, frame = camera.read()
-	frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-	frame = cv2.flip(frame, 1)
-	FRAME_WINDOW.image(frame)
-	frame = cv2.resize(frame, (200, 200))
-	img = image.img_to_array(frame)
-	img = img.reshape(1, img.shape[0], img.shape[1], img.shape[2])
-	img = preprocess_input(img)
+	camera = cv2.VideoCapture(0)
+	isCameraOn = True
+	if isCameraOn:
+		subH.subheader('Face Mask Prediction')
+		_, frame = camera.read()
+		frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+		frame = cv2.flip(frame, 1)
+		FRAME_WINDOW.image(frame)
+		frame = cv2.resize(frame, (200, 200))
+		img = image.img_to_array(frame)
+		img = img.reshape(1, img.shape[0], img.shape[1], img.shape[2])
+		img = preprocess_input(img)
 
-	feat_test = dm.predict(img)
-	feat_test = scaler.transform(feat_test)
-	y_pred = np.round(model.predict(feat_test)[0][0])
-	if y_pred == 1:
-		result.text('Not using mask!!!')
-	else:
-		result.text('Using Mask, Good')
+		feat_test = dm.predict(img)
+		feat_test = scaler.transform(feat_test)
+		y_pred = np.round(model.predict(feat_test)[0][0])
+		if y_pred == 1:
+			result.text('Not using mask!!!')
+		else:
+			result.text('Using Mask, Good')
+
+
+if isCameraOn:
+	isCameraOn = False
+	camera.release()
+	cv2.destroyAllWindows()

@@ -51,10 +51,13 @@ scaler = load_scaler()
 while run:
 	status.write('')
 	camera = cv2.VideoCapture(0)
-	isCameraOn = True
-	if isCameraOn:
-		subH.subheader('Face Mask Prediction')
-		_, frame = camera.read()
+	if not camera.isOpened():
+		camera.open()
+
+	subH.subheader('Face Mask Prediction')
+	ret, frame = camera.read()
+	if ret:
+		isCameraOn = True
 		frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 		frame = cv2.flip(frame, 1)
 		FRAME_WINDOW.image(frame)

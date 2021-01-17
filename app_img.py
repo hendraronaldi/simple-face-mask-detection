@@ -27,6 +27,11 @@ def load_features():
 def load_scaler():
 	return joblib.load('scaler.pkl')
 
+# sidebar
+st.sidebar.header("Parameters")
+threshold = st.sidebar.slider('Threshold', 0.0, 1.0, 0.5)
+
+# main page
 st.title("Face Mask Detection")
 st.write("""
 Source Notebook: [link](https://github.com/hendraronaldi/DPHI_data_science_challenges/blob/main/DPHI%20Face%20Mask%20Detection.ipynb)
@@ -55,10 +60,11 @@ if uploaded_img is not None:
 
 		feat_test = dm.predict(img)
 		feat_test = scaler.transform(feat_test)
-		y_pred = np.round(model.predict(feat_test)[0][0])
-		if y_pred == 1:
+		y_pred = 1-model.predict(feat_test)[0][0]
+		if y_pred < threshold:
 			st.subheader('Not using face mask!!!')
 		else:
 			st.subheader('Using face mask, good')
+		st.text(f'Prediction Score: {y_pred}')
 	except:
 		st.subheader("Please upload image")
